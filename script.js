@@ -18,9 +18,37 @@ function setConnected(n) {
     document.getElementById("statusDot" + n).classList.add("status-dot--connected");
 }
 
+// ── Toast ─────────────────────────────────────────────────
+
+let toastTimer = null;
+
+function showToast(message, type = "error") {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.className = "toast toast--show toast--" + type;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+        toast.classList.remove("toast--show");
+    }, 4000);
+}
+
+function checkBluetooth() {
+    if (!navigator.bluetooth) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if (isIOS) {
+            showToast("Web Bluetooth is not supported on iOS Safari. Please use the Bluefy browser app.", "warn");
+        } else {
+            showToast("Web Bluetooth is not supported in this browser. Please use Chrome on Android or desktop.", "warn");
+        }
+        return false;
+    }
+    return true;
+}
+
 // ── Bluetooth ─────────────────────────────────────────────
 
 async function connectDevice1() {
+    if (!checkBluetooth()) return;
     try {
         const device = await navigator.bluetooth.requestDevice({
             filters: [{ name: "PedalCounter_1" }],
@@ -37,11 +65,14 @@ async function connectDevice1() {
         setConnected(1);
 
     } catch (err) {
-        alert(err);
+        if (err.name !== "NotFoundError") {
+            showToast(err.message || String(err), "error");
+        }
     }
 }
 
 async function connectDevice2() {
+    if (!checkBluetooth()) return;
     try {
         const device = await navigator.bluetooth.requestDevice({
             filters: [{ name: "PedalCounter_2" }],
@@ -58,7 +89,9 @@ async function connectDevice2() {
         setConnected(2);
 
     } catch (err) {
-        alert(err);
+        if (err.name !== "NotFoundError") {
+            showToast(err.message || String(err), "error");
+        }
     }
 }
 
