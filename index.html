@@ -14,8 +14,8 @@
 
 <meta name="theme-color" content="#0f172a">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="EMS">
-<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-title" content="Pedal Counter">
+<link rel="apple-touch-icon" href="pedal Counter.png">
 </head>
 <body>
 
@@ -172,59 +172,6 @@
   </main>
 
 <script src="script.js"></script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
-}
-
-// Theme toggle
-const themeToggle = document.getElementById("themeToggle");
-const saved = localStorage.getItem("theme");
-if (saved === "light") document.documentElement.setAttribute("data-theme", "light");
-
-themeToggle.addEventListener("click", () => {
-  const isLight = document.documentElement.getAttribute("data-theme") === "light";
-  if (isLight) {
-    document.documentElement.removeAttribute("data-theme");
-    localStorage.setItem("theme", "dark");
-  } else {
-    document.documentElement.setAttribute("data-theme", "light");
-    localStorage.setItem("theme", "light");
-  }
-});
-
-// Clock
-function updateClock() {
-  const now = new Date();
-  document.getElementById("clock").textContent =
-    now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-}
-updateClock();
-setInterval(updateClock, 1000);
-
-// Patch status updates to also update pill style
-const _orig1 = connectDevice1;
-const _orig2 = connectDevice2;
-
-async function connectDevice1() {
-  await _orig1();
-  const s = document.getElementById("status1").innerText;
-  if (s === "Connected") setConnected(1);
-}
-async function connectDevice2() {
-  await _orig2();
-  const s = document.getElementById("status2").innerText;
-  if (s === "Connected") setConnected(2);
-}
-
-function setConnected(n) {
-  const pill = document.getElementById("statusPill" + n);
-  const dot  = document.getElementById("statusDot" + n);
-  pill.classList.add("status-pill--connected");
-  dot.classList.add("status-dot--connected");
-}
-</script>
 
 </body>
 </html>
