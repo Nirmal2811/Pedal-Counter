@@ -1,0 +1,15 @@
+{
+  "name": "Dual Pedal Counter Dashboard",
+  "short_name": "PedalCounter",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
