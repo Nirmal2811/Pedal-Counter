@@ -3,13 +3,14 @@
   "short_name": "PedalCounter",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#f5f5f5",
+  "background_color": "#0f172a",
   "theme_color": "#0f172a",
   "icons": [
     {
-      "src": "pedal Counter.png",
-      "sizes": "180x180",
-      "type": "image/png"
+      "src": "icons/Pedal Counter.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
