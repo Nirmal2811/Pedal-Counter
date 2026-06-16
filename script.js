@@ -65,37 +65,71 @@ function checkBluetooth() {
     return true;
 }
 
-// ── Connection Modal ──────────────────────────────────────
+// ── Connection Modal (created dynamically) ────────────────
 
 let _connCancelled = false;
 
+function _buildConnModal() {
+    if (document.getElementById("connOverlay")) return;
+    const el = document.createElement("div");
+    el.id = "connOverlay";
+    el.className = "conn-overlay";
+    el.innerHTML = `
+      <div class="conn-card">
+        <div class="conn-anim">
+          <div class="conn-ring conn-ring--1"></div>
+          <div class="conn-ring conn-ring--2"></div>
+          <div class="conn-ring conn-ring--3"></div>
+          <div class="conn-bt-icon" id="connIcon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="conn-device" id="connDevice"></div>
+        <div class="conn-step" id="connStep"></div>
+        <div class="conn-status-row"><span class="conn-dot-anim"></span></div>
+        <button class="conn-cancel-btn" id="connCancelBtn" onclick="hideConnModal()">Cancel</button>
+      </div>`;
+    document.body.appendChild(el);
+}
+
 function showConnModal(deviceName, color) {
+    _buildConnModal();
     _connCancelled = false;
     const ov = document.getElementById("connOverlay");
-    document.getElementById("connDevice").textContent = deviceName;
-    document.getElementById("connStep").textContent   = "Scanning for device…";
+    document.getElementById("connDevice").textContent      = deviceName;
+    document.getElementById("connStep").textContent        = "Scanning for device…";
     document.getElementById("connCancelBtn").style.display = "";
-    ov.className = `conn-overlay conn--open conn--${color} conn--scanning`;
+    document.getElementById("connCancelBtn").textContent   = "Cancel";
+    // Trigger animation on next frame so transition fires
+    ov.className = `conn-overlay conn--${color}`;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        ov.classList.add("conn--open", "conn--scanning");
+    }));
 }
 
 function setConnStep(text, state) {
-    document.getElementById("connStep").textContent = text;
     const ov  = document.getElementById("connOverlay");
-    const cur = ov.className;
-    ov.className = cur
-        .replace(/conn--(scanning|connecting|success|error)/g, "")
+    if (!ov) return;
+    document.getElementById("connStep").textContent = text;
+    ov.className = ov.className
+        .replace(/conn--(scanning|connecting|success|error)\b/g, "")
         .trim() + ` conn--${state}`;
-    if (state === "success" || state === "error") {
-        document.getElementById("connCancelBtn").style.display = state === "error" ? "" : "none";
-        document.getElementById("connCancelBtn").textContent   = state === "error" ? "Close" : "Cancel";
+    if (state === "success") {
+        document.getElementById("connCancelBtn").style.display = "none";
+    } else if (state === "error") {
+        document.getElementById("connCancelBtn").style.display = "";
+        document.getElementById("connCancelBtn").textContent   = "Close";
     }
 }
 
 function hideConnModal() {
     _connCancelled = true;
     const ov = document.getElementById("connOverlay");
+    if (!ov) return;
     ov.classList.remove("conn--open");
-    setTimeout(() => { ov.className = "conn-overlay"; }, 300);
+    setTimeout(() => { if (ov.parentNode) ov.parentNode.removeChild(ov); }, 300);
 }
 
 // ── Bluetooth ─────────────────────────────────────────────
