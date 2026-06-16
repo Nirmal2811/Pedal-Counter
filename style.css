@@ -221,6 +221,10 @@ body {
 
 .nav-icon-btn:hover { background: var(--border-hi); color: var(--text); transform: rotate(20deg); }
 
+@media (hover: none) {
+  .nav-icon-btn:hover { transform: none; background: var(--border); color: var(--text-2); }
+}
+
 .icon-sun  { display: none; }
 .icon-moon { display: block; }
 [data-theme="light"] .icon-sun  { display: block; }
