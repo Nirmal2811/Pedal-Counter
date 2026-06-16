@@ -65,41 +65,86 @@ function checkBluetooth() {
     return true;
 }
 
+// ── Connection Modal ──────────────────────────────────────
+
+let _connCancelled = false;
+
+function showConnModal(deviceName, color) {
+    _connCancelled = false;
+    const ov = document.getElementById("connOverlay");
+    document.getElementById("connDevice").textContent = deviceName;
+    document.getElementById("connStep").textContent   = "Scanning for device…";
+    document.getElementById("connCancelBtn").style.display = "";
+    ov.className = `conn-overlay conn--open conn--${color} conn--scanning`;
+}
+
+function setConnStep(text, state) {
+    document.getElementById("connStep").textContent = text;
+    const ov  = document.getElementById("connOverlay");
+    const cur = ov.className;
+    ov.className = cur
+        .replace(/conn--(scanning|connecting|success|error)/g, "")
+        .trim() + ` conn--${state}`;
+    if (state === "success" || state === "error") {
+        document.getElementById("connCancelBtn").style.display = state === "error" ? "" : "none";
+        document.getElementById("connCancelBtn").textContent   = state === "error" ? "Close" : "Cancel";
+    }
+}
+
+function hideConnModal() {
+    _connCancelled = true;
+    const ov = document.getElementById("connOverlay");
+    ov.classList.remove("conn--open");
+    setTimeout(() => { ov.className = "conn-overlay"; }, 300);
+}
+
 // ── Bluetooth ─────────────────────────────────────────────
 
 async function connectDevice1() {
     if (!checkBluetooth()) return;
+    showConnModal("PedalCounter_1", "blue");
     try {
-        const device  = await navigator.bluetooth.requestDevice({
+        const device = await navigator.bluetooth.requestDevice({
             filters: [{ name: "PedalCounter_1" }],
             optionalServices: [SERVICE_UUID]
         });
+        if (_connCancelled) return;
+        setConnStep("Establishing connection…", "connecting");
         const server  = await device.gatt.connect();
         const service = await server.getPrimaryService(SERVICE_UUID);
         char1         = await service.getCharacteristic(CHARACTERISTIC_UUID);
         await char1.startNotifications();
         char1.addEventListener("characteristicvaluechanged", handleDevice1);
+        setConnStep("Connected!", "success");
         setConnected(1);
+        setTimeout(hideConnModal, 1400);
     } catch (err) {
-        if (err.name !== "NotFoundError") showToast(err.message || String(err), "error");
+        if (err.name === "NotFoundError") { hideConnModal(); return; }
+        setConnStep(err.message || "Connection failed.", "error");
     }
 }
 
 async function connectDevice2() {
     if (!checkBluetooth()) return;
+    showConnModal("PedalCounter_2", "purple");
     try {
-        const device  = await navigator.bluetooth.requestDevice({
+        const device = await navigator.bluetooth.requestDevice({
             filters: [{ name: "PedalCounter_2" }],
             optionalServices: [SERVICE_UUID]
         });
+        if (_connCancelled) return;
+        setConnStep("Establishing connection…", "connecting");
         const server  = await device.gatt.connect();
         const service = await server.getPrimaryService(SERVICE_UUID);
         char2         = await service.getCharacteristic(CHARACTERISTIC_UUID);
         await char2.startNotifications();
         char2.addEventListener("characteristicvaluechanged", handleDevice2);
+        setConnStep("Connected!", "success");
         setConnected(2);
+        setTimeout(hideConnModal, 1400);
     } catch (err) {
-        if (err.name !== "NotFoundError") showToast(err.message || String(err), "error");
+        if (err.name === "NotFoundError") { hideConnModal(); return; }
+        setConnStep(err.message || "Connection failed.", "error");
     }
 }
 

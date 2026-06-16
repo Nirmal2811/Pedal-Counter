@@ -889,6 +889,200 @@ body {
 }
 
 /* ═══════════════════════════════════════════
+   CONNECTION MODAL
+═══════════════════════════════════════════ */
+.conn-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.conn-overlay.conn--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.conn-card {
+  background: #0e1828;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 40px 32px 32px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  transform: scale(0.94) translateY(12px);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.conn-overlay.conn--open .conn-card {
+  transform: scale(1) translateY(0);
+}
+
+[data-theme="light"] .conn-card { background: #ffffff; }
+
+/* ── Animated rings ── */
+.conn-anim {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.conn-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--conn-color, var(--blue));
+  width: 72px;
+  height: 72px;
+  opacity: 0;
+}
+
+.conn-overlay.conn--scanning .conn-ring { animation: sonar 2.2s ease-out infinite; }
+.conn-overlay.conn--scanning .conn-ring--1 { animation-delay: 0s; }
+.conn-overlay.conn--scanning .conn-ring--2 { animation-delay: 0.6s; }
+.conn-overlay.conn--scanning .conn-ring--3 { animation-delay: 1.2s; }
+
+@keyframes sonar {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* ── Center BT icon ── */
+.conn-bt-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--conn-bg, var(--blue-gl));
+  border: 2px solid var(--conn-color, var(--blue));
+  color: var(--conn-color, var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s;
+}
+
+.conn-overlay.conn--connecting .conn-bt-icon {
+  animation: spin-glow 1s linear infinite;
+}
+
+@keyframes spin-glow {
+  0%   { box-shadow: 0 0 0 0 var(--conn-color, var(--blue)); }
+  50%  { box-shadow: 0 0 20px 4px var(--conn-color, var(--blue)); }
+  100% { box-shadow: 0 0 0 0 var(--conn-color, var(--blue)); }
+}
+
+.conn-overlay.conn--success .conn-bt-icon {
+  background: rgba(16,185,129,0.15);
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 24px rgba(16,185,129,0.3);
+  animation: none;
+}
+
+.conn-overlay.conn--error .conn-bt-icon {
+  background: rgba(239,68,68,0.12);
+  border-color: var(--red);
+  color: var(--red);
+  animation: none;
+}
+
+/* ── Text ── */
+.conn-device {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--conn-color, var(--blue));
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.conn-step {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  letter-spacing: -0.3px;
+  line-height: 1.35;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  transition: all 0.2s;
+}
+
+.conn-status-row {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+  margin-bottom: 28px;
+}
+
+/* Animated dots */
+.conn-dot-anim::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-3);
+  box-shadow: 12px 0 0 var(--text-3), 24px 0 0 var(--text-3);
+  animation: dotsBlink 1.4s ease-in-out infinite;
+}
+
+.conn-overlay.conn--success .conn-dot-anim::after,
+.conn-overlay.conn--error   .conn-dot-anim::after { display: none; }
+
+@keyframes dotsBlink {
+  0%, 80%, 100% { opacity: 0.25; }
+  40%           { opacity: 1; }
+}
+
+/* ── Cancel button ── */
+.conn-cancel-btn {
+  width: 100%;
+  height: 46px;
+  border: 1px solid var(--border-hi);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.conn-cancel-btn:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+
+[data-theme="light"] .conn-cancel-btn { background: rgba(0,0,0,0.04); }
+[data-theme="light"] .conn-cancel-btn:hover { background: rgba(0,0,0,0.08); }
+
+/* ── Color variants ── */
+.conn-overlay.conn--blue   { --conn-color: var(--blue);   --conn-bg: var(--blue-gl);   }
+.conn-overlay.conn--purple { --conn-color: var(--purple); --conn-bg: var(--purple-gl); }
+
+/* ═══════════════════════════════════════════
    TOAST
 ═══════════════════════════════════════════ */
 .toast {
