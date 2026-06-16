@@ -215,7 +215,7 @@ function renderHistory() {
     }
 
     list.innerHTML = records.map(r => {
-        const colorClass = r.device === "Device 1" ? "badge--blue" : "badge--purple";
+        const devBadge = r.device === "Device 1" ? "badge--blue" : "badge--purple";
         return `
           <div class="record-card">
             <div class="record-top">
@@ -224,23 +224,24 @@ function renderHistory() {
                 <div class="record-date">${r.date}</div>
               </div>
               <div class="record-badges">
-                <span class="badge ${colorClass}">${r.device}</span>
+                <span class="badge ${devBadge}">${r.device}</span>
                 <span class="badge badge--gray">${r.zone}</span>
                 <span class="badge badge--gray">${r.graftType}</span>
               </div>
             </div>
+            <div class="record-divider"></div>
             <div class="record-meta">
-              <div class="record-meta-item">
-                <span class="record-meta-label">Count</span>
-                <span class="record-meta-value record-count">${r.count}</span>
+              <div class="record-count-wrap">
+                <div class="record-count">${r.count}</div>
+                <div class="record-field-label" style="margin-top:4px">grafts</div>
               </div>
-              <div class="record-meta-item">
-                <span class="record-meta-label">Start</span>
-                <span class="record-meta-value">${r.startTime}</span>
+              <div class="record-field">
+                <span class="record-field-label">Start Time</span>
+                <span class="record-field-value">${r.startTime}</span>
               </div>
-              <div class="record-meta-item">
-                <span class="record-meta-label">End</span>
-                <span class="record-meta-value">${r.endTime}</span>
+              <div class="record-field">
+                <span class="record-field-label">End Time</span>
+                <span class="record-field-value">${r.endTime}</span>
               </div>
             </div>
           </div>`;

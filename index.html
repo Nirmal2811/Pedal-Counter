@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dual Pedal Counter Dashboard</title>
+<title>Pedal Counter — Dashboard</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
 <link rel="manifest" href="manifest.json">
 
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070f1e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Pedal Counter">
 <link rel="apple-touch-icon" href="icons/Pedal Counter.png">
@@ -23,60 +23,60 @@
   <header class="navbar">
     <div class="navbar-left">
       <div class="logo-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M12 6v6l4 2"/>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/>
         </svg>
       </div>
-      <span class="navbar-title">Pedal Counter</span>
-      <span class="navbar-subtitle">Dashboard</span>
+      <div class="navbar-brand">
+        <span class="navbar-title">Pedal Counter</span>
+        <span class="navbar-sub">Hair Graft Dashboard</span>
+      </div>
     </div>
+
     <div class="navbar-right">
       <div class="live-badge">
         <span class="live-dot"></span>
         LIVE
       </div>
-      <div id="clock" class="clock"></div>
-      <button class="nav-btn" id="historyBtn" onclick="openHistory()" title="View History">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 3h18v4H3z"/><path d="M3 11h18v2H3z"/><path d="M3 17h18v4H3z"/>
+      <span id="clock" class="clock"></span>
+      <button class="nav-btn" onclick="openHistory()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
         </svg>
         History
       </button>
-      <button class="nav-btn nav-btn--icon" id="themeToggle" title="Toggle light/dark mode">
-        <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <button class="nav-icon-btn" id="themeToggle" title="Toggle theme">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
-        <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1"  x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1"  y1="12" x2="3"  y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          <line x1="12" y1="1"  x2="12" y2="3"/>  <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>  <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
         </svg>
       </button>
     </div>
   </header>
 
-  <!-- Main -->
+  <!-- Main Grid -->
   <main class="main">
 
-    <!-- Device 1 -->
+    <!-- ── Device 1 ── -->
     <div class="card card--blue">
+
+      <!-- Card Header -->
       <div class="card-header">
         <div class="device-info">
           <div class="device-icon device-icon--blue">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/>
             </svg>
           </div>
           <div>
-            <h2 class="device-name">Device 1</h2>
-            <p class="device-id">PedalCounter_1</p>
+            <div class="device-name">Device 1</div>
+            <div class="device-id">PedalCounter_1</div>
           </div>
         </div>
         <div class="status-pill" id="statusPill1">
@@ -85,17 +85,26 @@
         </div>
       </div>
 
+      <!-- Count -->
+      <div class="count-section">
+        <div class="count-bg count-bg--blue"></div>
+        <div class="count-label">PEDAL COUNT</div>
+        <div class="count count--blue" id="count1">0</div>
+        <div class="count-unit">rotations</div>
+      </div>
+
       <!-- Session Form -->
       <div class="session-form">
-        <div class="form-group form-group--full">
-          <label class="form-label">Patient Name <span class="required">*</span></label>
-          <input class="form-input" id="patientName1" type="text" placeholder="Enter patient name">
+        <div class="section-heading">Session Details</div>
+        <div class="form-group">
+          <label class="form-label">Patient Name <span class="req">*</span></label>
+          <input class="form-input" id="patientName1" type="text" placeholder="Enter patient name" autocomplete="off">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Zone <span class="required">*</span></label>
+            <label class="form-label">Zone <span class="req">*</span></label>
             <select class="form-select" id="zone1">
-              <option value="">Select Zone</option>
+              <option value="">Select zone</option>
               <option>Hairline</option>
               <option>Frontal</option>
               <option>Mid-Scalp</option>
@@ -105,9 +114,9 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Graft Type <span class="required">*</span></label>
+            <label class="form-label">Graft Type <span class="req">*</span></label>
             <select class="form-select" id="graftType1">
-              <option value="">Select Type</option>
+              <option value="">Select type</option>
               <option>Single</option>
               <option>Double</option>
               <option>Triple</option>
@@ -117,52 +126,55 @@
         </div>
         <div class="time-bar">
           <div class="time-item">
-            <span class="time-label">START</span>
-            <span class="time-value" id="startTime1">--:--:--</span>
+            <span class="time-label">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              START
+            </span>
+            <span class="time-value" id="startTime1">—</span>
           </div>
-          <div class="time-sep">→</div>
-          <div class="time-item">
-            <span class="time-label">END</span>
-            <span class="time-value" id="endTime1">--:--:--</span>
+          <svg class="time-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+          <div class="time-item time-item--right">
+            <span class="time-label">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              END
+            </span>
+            <span class="time-value" id="endTime1">—</span>
           </div>
         </div>
       </div>
 
-      <div class="count-section">
-        <div class="count-label">PEDAL COUNT</div>
-        <div class="count" id="count1">0</div>
-        <div class="count-unit">rotations</div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn--primary" onclick="connectDevice1()">
+      <!-- Actions -->
+      <div class="actions">
+        <div class="btn-row">
+          <button class="btn btn--connect btn--blue" onclick="connectDevice1()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/>
+            </svg>
+            Connect
+          </button>
+          <button class="btn btn--reset" onclick="resetDevice1()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+            </svg>
+            Reset
+          </button>
+        </div>
+        <button class="btn btn--save" onclick="saveRecord(1)">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/>
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/>
           </svg>
-          Connect
-        </button>
-        <button class="btn btn--ghost" onclick="resetDevice1()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-          </svg>
-          Reset
+          Save Record
         </button>
       </div>
-      <button class="btn btn--save" onclick="saveRecord(1)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-          <polyline points="17,21 17,13 7,13 7,21"/>
-          <polyline points="7,3 7,8 15,8"/>
-        </svg>
-        Save Record
-      </button>
 
+      <!-- Log -->
       <div class="log-section">
-        <div class="log-header">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14,2 14,8 20,8"/>
+        <div class="log-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/>
           </svg>
           Activity Log
         </div>
@@ -170,18 +182,20 @@
       </div>
     </div>
 
-    <!-- Device 2 -->
+    <!-- ── Device 2 ── -->
     <div class="card card--purple">
+
+      <!-- Card Header -->
       <div class="card-header">
         <div class="device-info">
           <div class="device-icon device-icon--purple">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/>
             </svg>
           </div>
           <div>
-            <h2 class="device-name">Device 2</h2>
-            <p class="device-id">PedalCounter_2</p>
+            <div class="device-name">Device 2</div>
+            <div class="device-id">PedalCounter_2</div>
           </div>
         </div>
         <div class="status-pill" id="statusPill2">
@@ -190,17 +204,26 @@
         </div>
       </div>
 
+      <!-- Count -->
+      <div class="count-section">
+        <div class="count-bg count-bg--purple"></div>
+        <div class="count-label">PEDAL COUNT</div>
+        <div class="count count--purple" id="count2">0</div>
+        <div class="count-unit">rotations</div>
+      </div>
+
       <!-- Session Form -->
       <div class="session-form">
-        <div class="form-group form-group--full">
-          <label class="form-label">Patient Name <span class="required">*</span></label>
-          <input class="form-input" id="patientName2" type="text" placeholder="Enter patient name">
+        <div class="section-heading">Session Details</div>
+        <div class="form-group">
+          <label class="form-label">Patient Name <span class="req">*</span></label>
+          <input class="form-input" id="patientName2" type="text" placeholder="Enter patient name" autocomplete="off">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">Zone <span class="required">*</span></label>
+            <label class="form-label">Zone <span class="req">*</span></label>
             <select class="form-select" id="zone2">
-              <option value="">Select Zone</option>
+              <option value="">Select zone</option>
               <option>Hairline</option>
               <option>Frontal</option>
               <option>Mid-Scalp</option>
@@ -210,9 +233,9 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Graft Type <span class="required">*</span></label>
+            <label class="form-label">Graft Type <span class="req">*</span></label>
             <select class="form-select" id="graftType2">
-              <option value="">Select Type</option>
+              <option value="">Select type</option>
               <option>Single</option>
               <option>Double</option>
               <option>Triple</option>
@@ -222,52 +245,55 @@
         </div>
         <div class="time-bar">
           <div class="time-item">
-            <span class="time-label">START</span>
-            <span class="time-value" id="startTime2">--:--:--</span>
+            <span class="time-label">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              START
+            </span>
+            <span class="time-value" id="startTime2">—</span>
           </div>
-          <div class="time-sep">→</div>
-          <div class="time-item">
-            <span class="time-label">END</span>
-            <span class="time-value" id="endTime2">--:--:--</span>
+          <svg class="time-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+          <div class="time-item time-item--right">
+            <span class="time-label">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              END
+            </span>
+            <span class="time-value" id="endTime2">—</span>
           </div>
         </div>
       </div>
 
-      <div class="count-section">
-        <div class="count-label">PEDAL COUNT</div>
-        <div class="count" id="count2">0</div>
-        <div class="count-unit">rotations</div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn--primary btn--purple" onclick="connectDevice2()">
+      <!-- Actions -->
+      <div class="actions">
+        <div class="btn-row">
+          <button class="btn btn--connect btn--purple-c" onclick="connectDevice2()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/>
+            </svg>
+            Connect
+          </button>
+          <button class="btn btn--reset" onclick="resetDevice2()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+            </svg>
+            Reset
+          </button>
+        </div>
+        <button class="btn btn--save" onclick="saveRecord(2)">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/>
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/>
           </svg>
-          Connect
-        </button>
-        <button class="btn btn--ghost" onclick="resetDevice2()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-          </svg>
-          Reset
+          Save Record
         </button>
       </div>
-      <button class="btn btn--save" onclick="saveRecord(2)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-          <polyline points="17,21 17,13 7,13 7,21"/>
-          <polyline points="7,3 7,8 15,8"/>
-        </svg>
-        Save Record
-      </button>
 
+      <!-- Log -->
       <div class="log-section">
-        <div class="log-header">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14,2 14,8 20,8"/>
+        <div class="log-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h4"/>
           </svg>
           Activity Log
         </div>
@@ -282,30 +308,32 @@
     <div class="modal">
       <div class="modal-header">
         <div class="modal-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3h18v4H3z"/><path d="M3 11h18v2H3z"/><path d="M3 17h18v4H3z"/>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
           </svg>
           Session History
         </div>
         <div class="modal-actions">
-          <button class="modal-clear" onclick="clearHistory()">Clear All</button>
-          <button class="modal-close" onclick="closeHistory()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="btn-clear" onclick="clearHistory()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/>
+            </svg>
+            Clear All
+          </button>
+          <button class="btn-close" onclick="closeHistory()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
               <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
           </button>
         </div>
       </div>
-      <div class="modal-body" id="historyList">
-        <!-- Records rendered by JS -->
-      </div>
+      <div class="modal-body" id="historyList"></div>
     </div>
   </div>
 
-  <!-- Toast notification -->
+  <!-- Toast -->
   <div id="toast" class="toast" role="alert"></div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
