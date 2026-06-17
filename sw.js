@@ -1,10 +1,12 @@
-const CACHE_NAME = "pedal-counter-v2";
+const CACHE_NAME = "pedal-counter-v3";
 
 const urlsToCache = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./icons/Pedal Counter.png"
+  "./icons/Pedal Counter.png",
+  "./icons/Pedal White.png",
+  "./icons/Pedal Black.png"
 ];
 
 self.addEventListener("install", (event) => {
