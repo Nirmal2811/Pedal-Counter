@@ -131,6 +131,7 @@ body {
   color: var(--text);
   letter-spacing: -0.3px;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .navbar-sub {
