@@ -262,12 +262,17 @@ body {
 
 /* clip only the top accent line, not the content */
 .card > .card-header,
-.card > .session-form,
 .card > .count-section,
 .card > .actions,
 .card > .log-section {
   position: relative;
   z-index: 1;
+}
+
+/* session-form sits higher so dropdown panel overlaps sections below */
+.card > .session-form {
+  position: relative;
+  z-index: 2;
 }
 
 .card--blue  { border-top-color: rgba(59,130,246,0.30); }
@@ -1121,6 +1126,117 @@ body {
 .toast.toast--success { background: rgba(16,185,129,0.10); border-color: rgba(16,185,129,0.32); color: #6ee7b7; }
 
 [data-theme="light"] .toast { background: #ffffff; box-shadow: 0 8px 32px rgba(0,0,0,0.14); }
+
+/* ═══════════════════════════════════════════
+   CUSTOM SELECT
+═══════════════════════════════════════════ */
+.custom-select { position: relative; width: 100%; }
+
+.cs-trigger {
+  height: 44px;
+  padding: 0 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--text-3);
+  background: var(--surface-s);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--radius-input);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  user-select: none;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.cs-trigger:hover { border-color: rgba(255,255,255,0.18); }
+[data-theme="light"] .cs-trigger:hover { border-color: rgba(0,0,0,0.18); }
+
+.cs-trigger.cs-has-value { color: var(--text); }
+
+.cs-arrow {
+  flex-shrink: 0;
+  color: var(--text-3);
+  transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+.cs-open .cs-trigger {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.14);
+  background: rgba(59,130,246,0.04);
+}
+
+.card--purple .cs-open .cs-trigger {
+  border-color: var(--purple-hi);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.14);
+  background: rgba(124,58,237,0.04);
+}
+
+.cs-open .cs-arrow { transform: rotate(180deg); }
+
+/* ── Panel ── */
+.cs-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #0c1628;
+  border: 1px solid var(--border-hi);
+  border-radius: 12px;
+  z-index: 100;
+  overflow: hidden;
+  max-height: 224px;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top center;
+  pointer-events: none;
+  transition: opacity 0.16s, transform 0.16s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.04);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+[data-theme="light"] .cs-panel {
+  background: #ffffff;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14), inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+.cs-open .cs-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* ── Options ── */
+.cs-option {
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: background var(--transition), color var(--transition);
+}
+
+.cs-option:not(:last-child) { border-bottom: 1px solid var(--border); }
+
+.cs-option:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+[data-theme="light"] .cs-option:hover { background: rgba(0,0,0,0.04); }
+
+.cs-option--active { color: var(--text); font-weight: 600; }
+.card--blue   .cs-option--active { background: rgba(59,130,246,0.10); }
+.card--purple .cs-option--active { background: rgba(124,58,237,0.10); }
+
+.cs-check { flex-shrink: 0; opacity: 0; transition: opacity 0.15s; }
+.card--blue   .cs-option--active .cs-check { opacity: 1; color: var(--blue-hi); }
+.card--purple .cs-option--active .cs-check { opacity: 1; color: var(--purple-hi); }
 
 /* ═══════════════════════════════════════════
    STATS BAR

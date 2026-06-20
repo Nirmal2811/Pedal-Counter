@@ -465,6 +465,68 @@ document.addEventListener('keydown', e => {
     }
 });
 
+// ── Custom Dropdowns ──────────────────────────────────────
+
+function buildDropdown(selectEl) {
+    const opts        = Array.from(selectEl.options);
+    const placeholder = opts[0].text;
+    selectEl.style.display = 'none';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'custom-select';
+
+    const trigger = document.createElement('div');
+    trigger.className = 'cs-trigger';
+    trigger.innerHTML =
+        `<span class="cs-value">${placeholder}</span>
+         <svg class="cs-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+           <polyline points="6 9 12 15 18 9"/>
+         </svg>`;
+
+    const panel = document.createElement('div');
+    panel.className = 'cs-panel';
+
+    opts.slice(1).forEach(opt => {
+        const item = document.createElement('div');
+        item.className = 'cs-option';
+        item.dataset.value = opt.value || opt.text;
+        item.innerHTML =
+            `<span>${opt.text}</span>
+             <svg class="cs-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+               <polyline points="20 6 9 17 4 12"/>
+             </svg>`;
+
+        item.addEventListener('click', e => {
+            e.stopPropagation();
+            selectEl.value = item.dataset.value;
+            trigger.querySelector('.cs-value').textContent = opt.text;
+            trigger.classList.add('cs-has-value');
+            panel.querySelectorAll('.cs-option').forEach(o => o.classList.remove('cs-option--active'));
+            item.classList.add('cs-option--active');
+            wrapper.classList.remove('cs-open');
+        });
+
+        panel.appendChild(item);
+    });
+
+    wrapper.appendChild(trigger);
+    wrapper.appendChild(panel);
+    selectEl.parentNode.insertBefore(wrapper, selectEl.nextSibling);
+
+    trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        const wasOpen = wrapper.classList.contains('cs-open');
+        document.querySelectorAll('.custom-select.cs-open').forEach(d => d.classList.remove('cs-open'));
+        if (!wasOpen) wrapper.classList.add('cs-open');
+    });
+}
+
+document.addEventListener('click', () => {
+    document.querySelectorAll('.custom-select.cs-open').forEach(d => d.classList.remove('cs-open'));
+});
+
+document.querySelectorAll('.form-select').forEach(buildDropdown);
+
 // ── Service Worker ────────────────────────────────────────
 
 if ("serviceWorker" in navigator) {
