@@ -1123,6 +1123,108 @@ body {
 [data-theme="light"] .toast { background: #ffffff; box-shadow: 0 8px 32px rgba(0,0,0,0.14); }
 
 /* ═══════════════════════════════════════════
+   STATS BAR
+═══════════════════════════════════════════ */
+.stats-bar {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+  background: rgba(7, 15, 30, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .stats-bar { background: rgba(240, 244, 249, 0.72); }
+
+.stat-item {
+  flex: 1;
+  max-width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  gap: 3px;
+}
+
+.stat-sep {
+  width: 1px;
+  background: var(--border);
+  margin: 10px 0;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.stat-value--blue   { color: var(--blue-hi); }
+.stat-value--purple { color: var(--purple-hi); }
+
+.stat-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ═══════════════════════════════════════════
+   SESSION META (timer + rate in count section)
+═══════════════════════════════════════════ */
+.session-meta {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.session-meta.active { display: flex; }
+.meta-sep { opacity: 0.4; }
+
+/* ═══════════════════════════════════════════
+   SOUND TOGGLE
+═══════════════════════════════════════════ */
+.icon-sound-off { display: none; }
+.sound-muted .icon-sound-on  { display: none; }
+.sound-muted .icon-sound-off { display: block; }
+.sound-muted { opacity: 0.45; }
+
+/* ═══════════════════════════════════════════
+   EXPORT BUTTON
+═══════════════════════════════════════════ */
+.btn-export {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--blue-hi);
+  background: var(--blue-gl);
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btn-export:hover { background: rgba(59, 130, 246, 0.18); }
+
+/* ═══════════════════════════════════════════
    RESPONSIVE — TABLET
 ═══════════════════════════════════════════ */
 @media (max-width: 900px) {
@@ -1140,6 +1242,10 @@ body {
   .navbar-sub { display: none; }
   .live-badge { letter-spacing: 1px; padding: 4px 9px; }
   .clock { display: none; }
+
+  .stat-item { padding: 8px 10px; }
+  .stat-value { font-size: 17px; }
+  .stat-label { font-size: 8px; letter-spacing: 1px; }
 
   .main {
     grid-template-columns: 1fr;

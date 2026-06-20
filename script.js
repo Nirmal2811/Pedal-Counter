@@ -5,6 +5,10 @@ let char1 = null;
 let char2 = null;
 let startTime1 = null;
 let startTime2 = null;
+let timer1      = null;
+let timer2      = null;
+let audioCtx    = null;
+let soundEnabled = localStorage.getItem('sound') !== 'off';
 
 // ── Helpers ───────────────────────────────────────────────
 
@@ -37,6 +41,7 @@ function setConnected(n) {
     else         startTime2 = now;
     document.getElementById("startTime" + n).textContent = fmt(now);
     document.getElementById("endTime"   + n).textContent = "--:--:--";
+    startSessionTimer(n);
 }
 
 // ── Toast ─────────────────────────────────────────────────
@@ -190,7 +195,7 @@ function handleDevice1(event) {
     log.innerHTML += value + "<br>";
     log.scrollTop  = log.scrollHeight;
     const num = extractLastNumber(value);
-    if (num !== null) document.getElementById("count1").innerText = num;
+    if (num !== null) { document.getElementById("count1").innerText = num; updateStats(); playCountBeep(); }
 }
 
 function handleDevice2(event) {
@@ -199,13 +204,14 @@ function handleDevice2(event) {
     log.innerHTML += value + "<br>";
     log.scrollTop  = log.scrollHeight;
     const num = extractLastNumber(value);
-    if (num !== null) document.getElementById("count2").innerText = num;
+    if (num !== null) { document.getElementById("count2").innerText = num; updateStats(); playCountBeep(); }
 }
 
 // ── Reset ─────────────────────────────────────────────────
 
 async function resetDevice1() {
     document.getElementById("count1").innerText = "0";
+    updateStats();
     if (char1) {
         try { await char1.writeValue(new TextEncoder().encode("RESET")); }
         catch (err) { console.log(err); }
@@ -214,6 +220,7 @@ async function resetDevice1() {
 
 async function resetDevice2() {
     document.getElementById("count2").innerText = "0";
+    updateStats();
     if (char2) {
         try { await char2.writeValue(new TextEncoder().encode("RESET")); }
         catch (err) { console.log(err); }
@@ -352,6 +359,111 @@ function updateClock() {
 }
 updateClock();
 setInterval(updateClock, 1000);
+
+// ── Session Timer ─────────────────────────────────────────
+
+function startSessionTimer(n) {
+    if (n === 1 && timer1) clearInterval(timer1);
+    if (n === 2 && timer2) clearInterval(timer2);
+
+    const tick = () => {
+        const st   = n === 1 ? startTime1 : startTime2;
+        if (!st) return;
+        const secs = Math.floor((Date.now() - st.getTime()) / 1000);
+        const h    = String(Math.floor(secs / 3600)).padStart(2, '0');
+        const m    = String(Math.floor((secs % 3600) / 60)).padStart(2, '0');
+        const s    = String(secs % 60).padStart(2, '0');
+        document.getElementById('elapsed' + n).textContent = `${h}:${m}:${s}`;
+        const count = parseInt(document.getElementById('count' + n).innerText) || 0;
+        document.getElementById('rate' + n).textContent =
+            secs >= 6 ? (count / (secs / 60)).toFixed(1) + ' /min' : '— /min';
+    };
+
+    const id = setInterval(tick, 1000);
+    if (n === 1) timer1 = id; else timer2 = id;
+    tick();
+    document.getElementById('sessionMeta' + n).classList.add('active');
+}
+
+// ── Stats Bar ─────────────────────────────────────────────
+
+function updateStats() {
+    const c1 = parseInt(document.getElementById('count1').innerText) || 0;
+    const c2 = parseInt(document.getElementById('count2').innerText) || 0;
+    document.getElementById('statCount1').textContent = c1;
+    document.getElementById('statCount2').textContent = c2;
+    document.getElementById('statTotal').textContent  = c1 + c2;
+}
+
+// ── Sound Beep ────────────────────────────────────────────
+
+function playCountBeep() {
+    if (!soundEnabled) return;
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc  = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = 880;
+        gain.gain.setValueAtTime(0.10, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.08);
+    } catch { /* ignore */ }
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('sound', soundEnabled ? 'on' : 'off');
+    document.getElementById('soundToggle').classList.toggle('sound-muted', !soundEnabled);
+    showToast(soundEnabled ? 'Sound on' : 'Sound muted', 'success');
+    if (soundEnabled) playCountBeep();
+}
+
+if (!soundEnabled) document.getElementById('soundToggle').classList.add('sound-muted');
+
+// ── CSV Export ────────────────────────────────────────────
+
+function exportCSV() {
+    const records = JSON.parse(localStorage.getItem('pedalHistory') || '[]');
+    if (!records.length) { showToast('No records to export.', 'warn'); return; }
+    const headers = ['Date','Patient Name','Device','Zone','Graft Type','Count','Start Time','End Time'];
+    const rows    = records.map(r =>
+        [r.date, r.patientName, r.device, r.zone, r.graftType, r.count, r.startTime, r.endTime]
+            .map(v => `"${String(v ?? '').replace(/"/g, '""')}"`)
+            .join(',')
+    );
+    const csv  = [headers.join(','), ...rows].join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = Object.assign(document.createElement('a'), {
+        href: url, download: `pedal-history-${new Date().toISOString().slice(0, 10)}.csv`
+    });
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${records.length} record${records.length !== 1 ? 's' : ''}.`, 'success');
+}
+
+// ── Keyboard Shortcuts ────────────────────────────────────
+
+document.addEventListener('keydown', e => {
+    if (['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch (e.key) {
+        case '1': connectDevice1(); break;
+        case '2': connectDevice2(); break;
+        case 'h': case 'H': {
+            const m = document.getElementById('historyModal');
+            m.classList.contains('modal--open') ? closeHistory() : openHistory();
+            break;
+        }
+        case 's': case 'S': toggleSound(); break;
+        case 't': case 'T': document.getElementById('themeToggle').click(); break;
+        case 'Escape': closeHistory(); hideConnModal(); break;
+    }
+});
 
 // ── Service Worker ────────────────────────────────────────
 
